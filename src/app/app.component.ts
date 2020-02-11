@@ -36,9 +36,14 @@ export class AppComponent {
   ngDoCheck(): void {
     window.localStorage.setItem("todoslist", JSON.stringify(this.toodlist));
   }
+  // 添加内容
   addtods(e) {
     let setid = this.toodlist[this.toodlist.length - 1];
-    let setvals = e.target.value;
+    let setvals = e.target.value.trim();
+    if (setvals == "") {
+      alert("请输入内容");
+      return;
+    }
     this.toodlist.push({
       id: setid ? setid.id + 1 : 1,
       title: setvals,
