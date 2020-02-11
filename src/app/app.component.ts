@@ -30,24 +30,8 @@ export class AppComponent {
   } = null;
   public visibilty: string = "all";
   ngOnInit(): void {
-    window.onhashchange = () => {
-      let consha = window.location.hash.substr(1);
-      switch (consha) {
-        case "/":
-          this.visibilty = "all";
-
-          break;
-        case "/active":
-          this.visibilty = "active";
-          console.log(this.visibilty);
-          break;
-        case "/completed":
-          this.visibilty = "completed";
-          break;
-      }
-      console.log(consha);
-      console.log(this.visibilty);
-    };
+    this.refreshdata();
+    window.onhashchange = this.refreshdata.bind(this);
   }
   ngDoCheck(): void {
     window.localStorage.setItem("todoslist", JSON.stringify(this.toodlist));
@@ -109,4 +93,22 @@ export class AppComponent {
     }
   }
   //
+  refreshdata() {
+    let consha = window.location.hash.substr(1);
+    switch (consha) {
+      case "/":
+        this.visibilty = "all";
+
+        break;
+      case "/active":
+        this.visibilty = "active";
+        console.log(this.visibilty);
+        break;
+      case "/completed":
+        this.visibilty = "completed";
+        break;
+    }
+    console.log(consha);
+    console.log(this.visibilty);
+  }
 }
