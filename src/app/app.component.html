@@ -1,0 +1,48 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>{{title}}</h1>
+    <input (keyup.enter)="addtods($event)" class="new-todo" placeholder="What needs to be done?" autofocus>
+  </header>
+  <!-- This section should be hidden by default and shown when there are todos -->
+  <ng-template [ngIf]="toodlist.length">
+    <section class="main">
+      <input (change)="toggleAll = $event.target.checked" [checked]='toggleAll' id="toggle-all" class="toggle-all"
+        type="checkbox">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <!-- These are here just to show the structure of the list items -->
+        <!-- List items should get the class ` completed editing` when editing and `completed` when marked as completed -->
+        <li *ngFor="let todo of filterstodo;let i=index" [ngClass]="{
+          'completed': todo.done,
+          'editing':setediting==todo
+        }">
+          <div class="view">
+            <input class="toggle" type="checkbox" [(ngModel)]="todo.done">
+            <label (dblclick)="setediting=todo">{{ todo.title}}</label>
+            <button (click)="deltetodo(i)" class="destroy"></button>
+          </div>
+          <input (keyup)="handelsev($event)" (keyup.enter)="servestods(todo,$event)" class="edit"
+            (blur)="servestods(todo,$event)" value={{todo.title}}>
+        </li>
+      </ul>
+    </section>
+    <!-- This footer should hidden by default and shown when there are todos -->
+    <footer class="footer">
+      <!-- This should be `0 items left` by default -->
+      <span class="todo-count"><strong>{{todosucces}}</strong> item left</span>
+      <!-- Remove this if you don't implement routing -->
+      <ul class="filters">
+        <li>
+          <a [ngClass]="{'selected': visibilty == 'all'}" href="#/">All</a>
+        </li>
+        <li>
+          <a [ngClass]="{'selected': visibilty == 'active'}" href="#/active">Active</a>
+        </li>
+        <li>
+          <a [ngClass]="{'selected': visibilty == 'completed'}" href="#/completed">Completed</a>
+        </li>
+      </ul>
+      <!-- Hidden if no completed items are left ↓ -->
+      <button (click)="clearaactive()" class="clear-completed">Clear completed</button>
+    </footer>
+  </ng-template>
